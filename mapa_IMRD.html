@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Escritura Científica — Estructura IMRD</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#080c18;--bg2:#0d1120;--bg3:#121828;--surf:#161e32;--surf2:#1b2540;
+  --border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.13);
+  --text:#dddbe8;--muted:#7a7890;--gold:#c9a24e;
+  --I:#4e8ecf;--Ibg:rgba(78,142,207,.13);--Ibr:rgba(78,142,207,.3);
+  --M:#3dba8e;--Mbg:rgba(61,186,142,.13);--Mbr:rgba(61,186,142,.3);
+  --R:#d4943a;--Rbg:rgba(212,148,58,.13);--Rbr:rgba(212,148,58,.3);
+  --D:#cc5f5f;--Dbg:rgba(204,95,95,.13);--Dbr:rgba(204,95,95,.3);
+  --P:#9b6cc8;--Pbg:rgba(155,108,200,.13);--Pbr:rgba(155,108,200,.3);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-weight:300;overflow-x:hidden}
+body::after{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(255,255,255,.012) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.012) 1px,transparent 1px);background-size:48px 48px;pointer-events:none;z-index:0}
+.orb{position:fixed;border-radius:50%;filter:blur(90px);pointer-events:none;z-index:0;opacity:.05}
+.o1{width:600px;height:600px;background:#4e8ecf;top:-180px;left:-150px}
+.o2{width:450px;height:450px;background:#9b6cc8;bottom:0;right:-100px}
+.o3{width:350px;height:350px;background:#c9a24e;top:45%;left:35%}
+.page{position:relative;z-index:1;max-width:1060px;margin:0 auto;padding:0 24px 80px}
+
+/* HERO */
+.hero{text-align:center;padding:72px 0 56px}
+.eyebrow{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:18px;opacity:0;animation:up .6s ease .1s forwards}
+.hero h1{font-family:'Playfair Display',serif;font-size:clamp(36px,6vw,68px);font-weight:700;line-height:1.08;letter-spacing:-1px;margin-bottom:14px;opacity:0;animation:up .7s ease .25s forwards}
+.hero h1 em{font-style:italic;color:var(--gold)}
+.hero-sub{font-size:15px;color:var(--muted);max-width:520px;margin:0 auto 36px;line-height:1.8;opacity:0;animation:up .7s ease .4s forwards}
+.pills{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;opacity:0;animation:up .6s ease .55s forwards}
+.pill{padding:5px 14px;border-radius:100px;font-size:11.5px;font-weight:500;border:1px solid;letter-spacing:.3px}
+.pI{color:var(--I);border-color:var(--Ibr);background:var(--Ibg)}
+.pM{color:var(--M);border-color:var(--Mbr);background:var(--Mbg)}
+.pR{color:var(--R);border-color:var(--Rbr);background:var(--Rbg)}
+.pD{color:var(--D);border-color:var(--Dbr);background:var(--Dbg)}
+
+/* DIVIDER */
+.div-row{display:flex;align-items:center;gap:14px;margin:52px 0 36px}
+.div-line{flex:1;height:1px;background:var(--border2)}
+.div-txt{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--muted);white-space:nowrap}
+
+/* CONCEPT MAP */
+.map-wrap{opacity:0;animation:fadeIn .9s ease .8s forwards}
+.node-center{background:linear-gradient(135deg,var(--surf2),var(--surf));border:1px solid var(--border2);border-radius:18px;padding:22px 36px;text-align:center;max-width:480px;margin:0 auto}
+.node-center h2{font-family:'Playfair Display',serif;font-size:20px;color:var(--gold);margin-bottom:4px}
+.node-center p{font-size:12px;color:var(--muted)}
+.vl{width:2px;height:32px;background:linear-gradient(to bottom,var(--border2),transparent);margin:0 auto}
+.vls{width:1px;height:22px;background:var(--border2);margin:0 auto}
+.imrd-node{border:1px solid var(--Mbr);background:var(--Mbg);border-radius:14px;padding:13px 32px;text-align:center;max-width:260px;margin:0 auto}
+.imrd-node span{font-family:'Playfair Display',serif;font-size:17px;color:var(--M);font-weight:700}
+.cols4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.col-sec{display:flex;flex-direction:column;gap:8px}
+.sec-hd{border-radius:12px;padding:14px;text-align:center;border:1px solid}
+.sec-lt{font-family:'Playfair Display',serif;font-size:30px;font-weight:700;line-height:1}
+.sec-nm{font-size:11px;font-weight:500;letter-spacing:.4px;margin-top:3px}
+.Ih{background:var(--Ibg);border-color:var(--Ibr)}.Ih .sec-lt,.Ih .sec-nm{color:var(--I)}
+.Mh{background:var(--Mbg);border-color:var(--Mbr)}.Mh .sec-lt,.Mh .sec-nm{color:var(--M)}
+.Rh{background:var(--Rbg);border-color:var(--Rbr)}.Rh .sec-lt,.Rh .sec-nm{color:var(--R)}
+.Dh{background:var(--Dbg);border-color:var(--Dbr)}.Dh .sec-lt,.Dh .sec-nm{color:var(--D)}
+.sub-n{display:flex;flex-direction:column;gap:6px}
+.sn{border-radius:9px;padding:8px 10px;font-size:11.5px;text-align:center;border:1px solid;line-height:1.4}
+.Is{background:rgba(78,142,207,.08);border-color:rgba(78,142,207,.22);color:rgba(78,142,207,.9)}
+.Ms{background:rgba(61,186,142,.08);border-color:rgba(61,186,142,.22);color:rgba(61,186,142,.9)}
+.Rs{background:rgba(212,148,58,.08);border-color:rgba(212,148,58,.22);color:rgba(212,148,58,.9)}
+.Ds{background:rgba(204,95,95,.08);border-color:rgba(204,95,95,.22);color:rgba(204,95,95,.9)}
+.asc-node-root{border:1px solid var(--Pbr);background:var(--Pbg);border-radius:14px;padding:14px 32px;text-align:center;max-width:380px;margin:0 auto}
+.asc-node-root span{font-family:'Playfair Display',serif;font-size:17px;color:var(--P);font-weight:700}
+.asc-node-root small{display:block;font-size:11px;color:var(--muted);margin-top:3px}
+.asc4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.ascn{background:var(--Pbg);border:1px solid var(--Pbr);border-radius:11px;padding:14px;text-align:center}
+.ascn .t{font-size:12.5px;font-weight:500;color:var(--P);margin-bottom:4px;line-height:1.4}
+.ascn .d{font-size:11px;color:var(--muted);line-height:1.5}
+.link-box{background:linear-gradient(135deg,rgba(201,162,78,.07),rgba(155,108,200,.07));border:1px solid rgba(201,162,78,.22);border-radius:14px;padding:20px 28px;text-align:center}
+.link-box .lb{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:8px}
+.link-box p{font-size:13.5px;color:var(--text);line-height:1.8}
+.link-box strong{color:var(--gold);font-weight:500}
+
+/* DETAIL CARDS */
+.dgrid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.dc{border-radius:18px;border:1px solid;padding:28px;position:relative;overflow:hidden;transition:transform .3s,box-shadow .3s}
+.dc:hover{transform:translateY(-5px)}
+.dcI{background:var(--Ibg);border-color:var(--Ibr)}.dcI:hover{box-shadow:0 16px 48px rgba(78,142,207,.18)}
+.dcM{background:var(--Mbg);border-color:var(--Mbr)}.dcM:hover{box-shadow:0 16px 48px rgba(61,186,142,.18)}
+.dcR{background:var(--Rbg);border-color:var(--Rbr)}.dcR:hover{box-shadow:0 16px 48px rgba(212,148,58,.18)}
+.dcD{background:var(--Dbg);border-color:var(--Dbr)}.dcD:hover{box-shadow:0 16px 48px rgba(204,95,95,.18)}
+.dc-ghost{position:absolute;top:8px;right:18px;font-family:'Playfair Display',serif;font-size:80px;font-weight:700;opacity:.06;line-height:1;pointer-events:none}
+.dcI .dc-ghost{color:var(--I)}.dcM .dc-ghost{color:var(--M)}.dcR .dc-ghost{color:var(--R)}.dcD .dc-ghost{color:var(--D)}
+.dc-ttl{font-family:'Playfair Display',serif;font-size:21px;font-weight:700;margin-bottom:3px}
+.dcI .dc-ttl{color:var(--I)}.dcM .dc-ttl{color:var(--M)}.dcR .dc-ttl{color:var(--R)}.dcD .dc-ttl{color:var(--D)}
+.dc-sub{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:13px}
+.dc-desc{font-size:13.5px;line-height:1.75;color:rgba(221,219,232,.72);margin-bottom:15px}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:15px}
+.tg{font-size:10.5px;padding:3px 10px;border-radius:100px;font-weight:500;border:1px solid}
+.tI{color:var(--I);border-color:rgba(78,142,207,.35);background:rgba(78,142,207,.07)}
+.tM{color:var(--M);border-color:rgba(61,186,142,.35);background:rgba(61,186,142,.07)}
+.tR{color:var(--R);border-color:rgba(212,148,58,.35);background:rgba(212,148,58,.07)}
+.tD{color:var(--D);border-color:rgba(204,95,95,.35);background:rgba(204,95,95,.07)}
+.items{list-style:none}
+.items li{font-size:12.5px;color:rgba(221,219,232,.68);padding:6px 0;border-bottom:1px solid var(--border);display:flex;gap:8px;align-items:flex-start;line-height:1.55}
+.items li:last-child{border:none}
+.items li::before{content:'→';font-size:10px;margin-top:3px;flex-shrink:0}
+.dcI .items li::before{color:var(--I)}.dcM .items li::before{color:var(--M)}.dcR .items li::before{color:var(--R)}.dcD .items li::before{color:var(--D)}
+.tip{margin-top:13px;padding:10px 14px;border-radius:10px;font-size:12px;line-height:1.65;font-style:italic;border-left:2px solid}
+.dcI .tip{background:rgba(78,142,207,.08);border-color:var(--I);color:rgba(78,142,207,.9)}
+.dcM .tip{background:rgba(61,186,142,.08);border-color:var(--M);color:rgba(61,186,142,.9)}
+.dcR .tip{background:rgba(212,148,58,.08);border-color:var(--R);color:rgba(212,148,58,.9)}
+.dcD .tip{background:rgba(204,95,95,.08);border-color:var(--D);color:rgba(204,95,95,.9)}
+
+/* ASC DETAIL */
+.asc-sec{background:var(--Pbg);border:1px solid var(--Pbr);border-radius:18px;padding:36px;position:relative;overflow:hidden}
+.asc-sec::before{content:'';position:absolute;top:-80px;left:50%;transform:translateX(-50%);width:400px;height:400px;background:radial-gradient(circle,rgba(155,108,200,.1) 0%,transparent 70%);pointer-events:none}
+.asc-hd{text-align:center;margin-bottom:28px}
+.asc-ey{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--P);margin-bottom:8px}
+.asc-ht{font-family:'Playfair Display',serif;font-size:26px;color:var(--P);margin-bottom:6px}
+.asc-hp{font-size:13.5px;color:var(--muted);line-height:1.7;max-width:580px;margin:0 auto}
+.asc-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:24px}
+.asc-item{background:rgba(155,108,200,.07);border:1px solid rgba(155,108,200,.18);border-radius:12px;padding:18px}
+.asc-ico{font-size:20px;margin-bottom:8px}
+.asc-itl{font-size:13.5px;font-weight:500;color:var(--P);margin-bottom:5px}
+.asc-itx{font-size:12.5px;color:var(--muted);line-height:1.6}
+.asc-tbl{background:rgba(155,108,200,.06);border:1px solid rgba(155,108,200,.15);border-radius:12px;padding:18px 22px}
+.asc-tbl .lb{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:var(--P);margin-bottom:14px}
+.ar{display:grid;grid-template-columns:34px 1fr;gap:12px;align-items:start;padding:9px 0;border-bottom:1px solid var(--border)}
+.ar:last-child{border:none;padding-bottom:0}
+.ad{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:14px;font-weight:700;flex-shrink:0}
+.ar-tx strong{font-size:12.5px;font-weight:500;color:var(--text);display:block;margin-bottom:2px}
+.ar-tx span{font-size:11.5px;color:var(--muted);line-height:1.5}
+
+/* REFLEXIÓN */
+.ref{background:var(--bg2);border:1px solid var(--border2);border-radius:18px;padding:36px}
+.ref-hd{display:flex;align-items:center;gap:12px;margin-bottom:24px}
+.ref-ico{width:42px;height:42px;border-radius:12px;background:rgba(201,162,78,.12);border:1px solid rgba(201,162,78,.28);display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0}
+.ref-ttl{font-family:'Playfair Display',serif;font-size:20px;color:var(--gold)}
+.ref-ttl small{display:block;font-family:'DM Sans',sans-serif;font-size:11.5px;color:var(--muted);font-style:normal;margin-top:2px}
+.ql{list-style:none}
+.ql li{display:flex;gap:14px;padding:15px 0;border-bottom:1px solid var(--border);align-items:flex-start}
+.ql li:last-child{border:none}
+.qn{font-family:'DM Mono',monospace;font-size:11px;color:var(--gold);opacity:.55;min-width:20px;margin-top:2px}
+.qt{font-size:13.5px;color:rgba(221,219,232,.78);line-height:1.75}
+.qt strong{color:var(--text);font-weight:500}
+
+/* FOOTER */
+.footer{text-align:center;padding:52px 0 16px;font-size:11.5px;color:var(--muted);letter-spacing:.4px}
+.footer span{color:var(--gold)}
+
+/* ANIMATIONS */
+.reveal{opacity:0;transform:translateY(20px);transition:opacity .7s ease,transform .7s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+@keyframes up{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+
+/* RESPONSIVE */
+@media(max-width:680px){
+  .dgrid{grid-template-columns:1fr}
+  .cols4{grid-template-columns:1fr 1fr}
+  .asc4{grid-template-columns:1fr 1fr}
+  .asc-grid{grid-template-columns:1fr}
+}
+@media(max-width:440px){
+  .cols4{grid-template-columns:1fr}
+  .asc4{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<div class="orb o1"></div><div class="orb o2"></div><div class="orb o3"></div>
+<div class="page">
+
+<!-- HERO -->
+<section class="hero">
+  <p class="eyebrow">Mapa Conceptual · Escritura Científica</p>
+  <h1>Estructura <em>IMRD</em><br>&amp; Apropiación Social</h1>
+  <p class="hero-sub">Un recorrido visual por los pilares de la comunicación científica y su vínculo con la construcción colectiva del conocimiento.</p>
+  <div class="pills">
+    <span class="pill pI">I · Introducción</span>
+    <span class="pill pM">M · Métodos</span>
+    <span class="pill pR">R · Resultados</span>
+    <span class="pill pD">D · Discusión</span>
+  </div>
+</section>
+
+<!-- MAP SECTION -->
+<div class="div-row reveal"><div class="div-line"></div><span class="div-txt">Mapa conceptual</span><div class="div-line"></div></div>
+
+<div class="map-wrap">
+
+  <div class="node-center">
+    <h2>Escritura científica</h2>
+    <p>Estructura IMRD + Apropiación social del conocimiento</p>
+  </div>
+  <div class="vl"></div>
+
+  <div class="imrd-node"><span>Estructura IMRD</span></div>
+  <div class="vls"></div>
+
+  <div class="cols4">
+    <div class="col-sec">
+      <div class="sec-hd Ih"><div class="sec-lt">I</div><div class="sec-nm">Introducción</div></div>
+      <div class="sub-n">
+        <div class="sn Is">Contexto y antecedentes</div>
+        <div class="sn Is">Pregunta / problema</div>
+        <div class="sn Is">Justificación</div>
+        <div class="sn Is">Objetivos e hipótesis</div>
+      </div>
+    </div>
+    <div class="col-sec">
+      <div class="sec-hd Mh"><div class="sec-lt">M</div><div class="sec-nm">Métodos</div></div>
+      <div class="sub-n">
+        <div class="sn Ms">Diseño metodológico</div>
+        <div class="sn Ms">Muestra y procedimiento</div>
+        <div class="sn Ms">Instrumentos</div>
+        <div class="sn Ms">Reproducibilidad + Ética</div>
+      </div>
+    </div>
+    <div class="col-sec">
+      <div class="sec-hd Rh"><div class="sec-lt">R</div><div class="sec-nm">Resultados</div></div>
+      <div class="sub-n">
+        <div class="sn Rs">Datos y hallazgos</div>
+        <div class="sn Rs">Tablas y figuras</div>
+        <div class="sn Rs">Estadísticas clave</div>
+        <div class="sn Rs">Sin interpretación aún</div>
+      </div>
+    </div>
+    <div class="col-sec">
+      <div class="sec-hd Dh"><div class="sec-lt">D</div><div class="sec-nm">Discusión</div></div>
+      <div class="sub-n">
+        <div class="sn Ds">Interpretación</div>
+        <div class="sn Ds">Comparación c/ literatura</div>
+        <div class="sn Ds">Limitaciones</div>
+        <div class="sn Ds">Aportes + nuevas preguntas</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="vl" style="margin-top:24px"></div>
+
+  <div class="asc-node-root">
+    <span>Apropiación Social del Conocimiento (ASC)</span>
+    <small>Concepto articulador</small>
+  </div>
+  <div class="vls"></div>
+
+  <div class="asc4">
+    <div class="ascn"><div class="t">Democratización<br>del saber</div><div class="d">El conocimiento llega a toda la sociedad</div></div>
+    <div class="ascn"><div class="t">Comunicación<br>con la sociedad</div><div class="d">Formatos accesibles para diversas audiencias</div></div>
+    <div class="ascn"><div class="t">Impacto<br>disciplinar</div><div class="d">Transformación del campo desde el saber</div></div>
+    <div class="ascn"><div class="t">Diálogo<br>ciencia–comunidad</div><div class="d">Relación bidireccional investigadores–sociedad</div></div>
+  </div>
+
+  <div class="vl" style="margin-top:24px"></div>
+
+  <div class="link-box">
+    <div class="lb">Vínculo IMRD ↔ ASC</div>
+    <p>La escritura IMRD <strong>materializa la ASC</strong>: la sección de <strong>Discusión</strong> conecta los hallazgos con las necesidades reales del campo disciplinar y abre el conocimiento a la sociedad.</p>
+  </div>
+
+</div><!-- /map-wrap -->
+
+<!-- DETAIL CARDS -->
+<div class="div-row reveal"><div class="div-line"></div><span class="div-txt">Detalle de cada sección</span><div class="div-line"></div></div>
+
+<div class="dgrid">
+  <div class="dc dcI reveal">
+    <div class="dc-ghost">I</div>
+    <div class="dc-ttl">Introducción</div>
+    <div class="dc-sub">El punto de partida</div>
+    <p class="dc-desc">Establece el marco de referencia del estudio, contextualiza el problema y justifica la relevancia de la investigación ante la comunidad científica.</p>
+    <div class="tags"><span class="tg tI">Pregunta de investigación</span><span class="tg tI">Antecedentes</span><span class="tg tI">Objetivos</span><span class="tg tI">Hipótesis</span></div>
+    <ul class="items dcI">
+      <li>Contextualiza el área y ubica el vacío teórico existente</li>
+      <li>Formula la pregunta o problema que motiva el estudio</li>
+      <li>Justifica la pertinencia social y académica del trabajo</li>
+      <li>Enuncia el objetivo general y los específicos</li>
+      <li>Presenta la hipótesis o supuesto de investigación</li>
+    </ul>
+    <div class="tip dcI">💡 Responde: <em>¿por qué es importante estudiar esto?</em></div>
+  </div>
+
+  <div class="dc dcM reveal">
+    <div class="dc-ghost">M</div>
+    <div class="dc-ttl">Métodos</div>
+    <div class="dc-sub">El camino recorrido</div>
+    <p class="dc-desc">Describe con precisión los procedimientos, instrumentos y criterios utilizados para que cualquier investigador pueda replicar o evaluar el estudio.</p>
+    <div class="tags"><span class="tg tM">Diseño metodológico</span><span class="tg tM">Muestra</span><span class="tg tM">Instrumentos</span><span class="tg tM">Análisis</span></div>
+    <ul class="items dcM">
+      <li>Define el enfoque (cuantitativo, cualitativo, mixto)</li>
+      <li>Describe la población, muestra y criterios de selección</li>
+      <li>Detalla los instrumentos de recolección de datos</li>
+      <li>Explica el procedimiento de análisis estadístico</li>
+      <li>Declara consideraciones éticas y limitaciones del diseño</li>
+    </ul>
+    <div class="tip dcM">💡 Responde: <em>¿cómo se realizó y puede replicarse?</em></div>
+  </div>
+
+  <div class="dc dcR reveal">
+    <div class="dc-ghost">R</div>
+    <div class="dc-ttl">Resultados</div>
+    <div class="dc-sub">Los hallazgos objetivos</div>
+    <p class="dc-desc">Presenta los datos obtenidos de forma clara y organizada, sin interpretaciones subjetivas. Es la sección más objetiva del artículo científico.</p>
+    <div class="tags"><span class="tg tR">Datos empíricos</span><span class="tg tR">Tablas</span><span class="tg tR">Figuras</span><span class="tg tR">Estadísticas</span></div>
+    <ul class="items dcR">
+      <li>Presenta datos en el orden lógico del objetivo planteado</li>
+      <li>Usa tablas y figuras para organizar la información</li>
+      <li>Reporta valores estadísticos relevantes (p, IC, tamaño de efecto)</li>
+      <li>No interpreta ni discute; solo describe los datos</li>
+      <li>Debe ser coherente con el diseño metodológico descrito</li>
+    </ul>
+    <div class="tip dcR">💡 Responde: <em>¿qué se encontró exactamente?</em></div>
+  </div>
+
+  <div class="dc dcD reveal">
+    <div class="dc-ghost">D</div>
+    <div class="dc-ttl">Discusión</div>
+    <div class="dc-sub">El diálogo con el saber</div>
+    <p class="dc-desc">Interpreta los resultados en relación con la literatura existente, reconoce las limitaciones y abre nuevas preguntas. Es donde la ciencia dialoga consigo misma.</p>
+    <div class="tags"><span class="tg tD">Interpretación</span><span class="tg tD">Comparación</span><span class="tg tD">Limitaciones</span><span class="tg tD">Proyecciones</span></div>
+    <ul class="items dcD">
+      <li>Interpreta hallazgos a la luz del marco teórico inicial</li>
+      <li>Compara con estudios previos: convergencias y divergencias</li>
+      <li>Reconoce las limitaciones metodológicas y su alcance</li>
+      <li>Señala las implicaciones teóricas y prácticas del estudio</li>
+      <li>Propone nuevas preguntas y líneas futuras de investigación</li>
+    </ul>
+    <div class="tip dcD">💡 Responde: <em>¿qué significan estos hallazgos para el campo?</em></div>
+  </div>
+</div>
+
+<!-- ASC DETAIL -->
+<div class="div-row reveal"><div class="div-line"></div><span class="div-txt">Apropiación social del conocimiento</span><div class="div-line"></div></div>
+
+<div class="asc-sec reveal">
+  <div class="asc-hd">
+    <p class="asc-ey">Concepto articulador</p>
+    <h2 class="asc-ht">Apropiación Social del Conocimiento</h2>
+    <p class="asc-hp">Proceso mediante el cual los resultados científicos trascienden el ámbito académico para ser comprendidos, utilizados y enriquecidos por la sociedad en su conjunto.</p>
+  </div>
+  <div class="asc-grid">
+    <div class="asc-item reveal">
+      <div class="asc-ico">🌐</div>
+      <div class="asc-itl">Democratización del saber</div>
+      <p class="asc-itx">El conocimiento científico no pertenece solo a las élites académicas. Su apropiación implica hacerlo accesible y aplicable para distintas comunidades y contextos culturales.</p>
+    </div>
+    <div class="asc-item reveal">
+      <div class="asc-ico">🤝</div>
+      <div class="asc-itl">Diálogo ciencia–comunidad</div>
+      <p class="asc-itx">La relación debe ser bidireccional: la comunidad no solo recibe conocimiento, sino que participa en definir las preguntas relevantes y en co-construir saberes.</p>
+    </div>
+    <div class="asc-item reveal">
+      <div class="asc-ico">📢</div>
+      <div class="asc-itl">Comunicación con la sociedad</div>
+      <p class="asc-itx">Más allá del artículo científico, los hallazgos deben circular en formatos accesibles: divulgación, informes de política pública, redes sociales académicas y medios comunitarios.</p>
+    </div>
+    <div class="asc-item reveal">
+      <div class="asc-ico">🔬</div>
+      <div class="asc-itl">Impacto disciplinar</div>
+      <p class="asc-itx">Cada campo tiene modos propios de apropiar y diseminar el conocimiento. Reconocerlos permite diseñar estrategias más efectivas de transferencia y uso social de la investigación.</p>
+    </div>
+  </div>
+  <div class="asc-tbl">
+    <p class="lb">ASC en cada sección IMRD</p>
+    <div class="ar">
+      <div class="ad" style="background:var(--Ibg);border:1px solid var(--Ibr);color:var(--I)">I</div>
+      <div class="ar-tx"><strong>Introducción</strong><span>Justifica la relevancia social del problema e inserta la pregunta en las necesidades reales del entorno.</span></div>
+    </div>
+    <div class="ar">
+      <div class="ad" style="background:var(--Mbg);border:1px solid var(--Mbr);color:var(--M)">M</div>
+      <div class="ar-tx"><strong>Métodos</strong><span>Garantiza transparencia, reproducibilidad y ética; valores esenciales para la confianza social en la ciencia.</span></div>
+    </div>
+    <div class="ar">
+      <div class="ad" style="background:var(--Rbg);border:1px solid var(--Rbr);color:var(--R)">R</div>
+      <div class="ar-tx"><strong>Resultados</strong><span>Datos abiertos y verificables que pueden ser retomados por otras investigaciones o por actores sociales.</span></div>
+    </div>
+    <div class="ar">
+      <div class="ad" style="background:var(--Dbg);border:1px solid var(--Dbr);color:var(--D)">D</div>
+      <div class="ar-tx"><strong>Discusión</strong><span>Puente entre los hallazgos científicos y la realidad social; aquí el conocimiento adquiere su valor para la comunidad.</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- REFLEXIÓN -->
+<div class="div-row reveal"><div class="div-line"></div><span class="div-txt">Reflexión disciplinar</span><div class="div-line"></div></div>
+
+<div class="ref reveal">
+  <div class="ref-hd">
+    <div class="ref-ico">✦</div>
+    <div class="ref-ttl">Preguntas para la reflexión
+      <small>Aplicadas a tu campo de estudio y el conversatorio de clase</small>
+    </div>
+  </div>
+  <ul class="ql">
+    <li><span class="qn">01</span><span class="qt"><strong>¿Cómo difunde mi campo el conocimiento más allá de la academia?</strong> ¿Qué canales formales e informales existen en mi disciplina para comunicar hallazgos a audiencias no especializadas?</span></li>
+    <li><span class="qn">02</span><span class="qt"><strong>¿Qué formatos permiten mayor apropiación?</strong> Artículos IMRD, informes técnicos, divulgación, infografías, podcasts, repositorios abiertos… ¿cuál es el más efectivo en mi área?</span></li>
+    <li><span class="qn">03</span><span class="qt"><strong>¿Para quién escribimos cuando usamos la estructura IMRD?</strong> ¿Solo para pares académicos o también para comunidades, instituciones y tomadores de decisiones?</span></li>
+    <li><span class="qn">04</span><span class="qt"><strong>¿Cómo integrar la voz de la comunidad en nuestra investigación?</strong> ¿De qué manera los saberes locales pueden enriquecer las preguntas de investigación de mi disciplina?</span></li>
+    <li><span class="qn">05</span><span class="qt"><strong>¿Qué barreras limitan la apropiación del conocimiento en mi campo?</strong> Lenguaje técnico, acceso a revistas indexadas, idioma de publicación… ¿cómo superarlas?</span></li>
+  </ul>
+</div>
+
+<div class="footer">
+  Elaborado como recurso de aprendizaje para la actividad de <span>Escritura Científica IMRD</span><br>
+  Comunicación del conocimiento · Apropiación social · Estructura académica
+</div>
+
+</div>
+<script>
+const io=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting){x.target.classList.add('visible');io.unobserve(x.target)}})},{threshold:.08});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+</script>
+</body>
+</html>
